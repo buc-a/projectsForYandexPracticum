@@ -1,0 +1,20 @@
+.header__lang-link {
+    font-family: 'Inter Regular', sans-serif;
+    color: #fff;
+    text-decoration: none;
+}
+
+@media screen and (min-width: 768px){
+    .header__lang-link{
+        line-height: 28px;
+        font-size: 24px;  
+    }
+}
+
+@media screen and (max-width: 768px){
+    .header__lang-link{
+        line-height: calc((100vw - 320px)/56 + 20px);
+        font-size: calc((100vw - 320px)/74.5 + 18px);
+    }
+}
+

@@ -1,0 +1,12 @@
+.places__place__website__link{
+    color: white;
+    
+    margin: 0;
+    font-family: 'Inter Regular';
+    line-height: 22px;
+    text-align: left;
+    font-size: 18px;
+}
+.places__place__website__link:hover {
+    opacity: 0.8;
+}

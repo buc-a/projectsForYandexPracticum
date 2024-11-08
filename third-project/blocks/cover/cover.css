@@ -1,0 +1,27 @@
+.cover{
+    margin: 0 auto 92px;
+    max-width: 1184px;
+}
+@media screen and (max-width: 1280px) {
+	.cover {
+      margin: 0 calc((100vw - 1024px) * 48 / (1280 - 1024)) 92px;
+	}
+}
+@media screen and (max-width: 1024px) {
+	.cover {
+      margin: 0 0 calc(88px + (((100vw - 768px) * (92 - 88)) / (1024 - 768)));
+      max-width: 100vw;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.cover {
+      margin-bottom: calc(64px + (((100vw - 320px) * (88 - 64)) / (768 - 320)));
+	}
+}
+
+@media screen and (max-width: 400px) {
+	.cover {
+	  margin-bottom: 64px;
+	}
+}

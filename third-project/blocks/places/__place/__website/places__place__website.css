@@ -1,0 +1,10 @@
+.places__place__website{
+    margin: 0;
+    justify-self: start;
+    align-self: end;
+}
+@media screen and (max-width: 500px) {
+    .places__place__website{
+        margin-left: 16px;
+    }
+}
