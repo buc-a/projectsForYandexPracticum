@@ -5,3 +5,5 @@
 [second-project](https://github.com/buc-a/projectsForYandexPracticum/tree/main/second-project) - разширенные возможности HTML и CSS (доработка проекта 1)
 
 [third-project](https://github.com/buc-a/projectsForYandexPracticum/tree/main/third-project) - адаптивная верстка и работа с макетом
+
+[mesto-project](https://github.com/buc-a/projectsForYandexPracticum/tree/main/mesto-project) - добавление интерактива в свёрстанный проект 
