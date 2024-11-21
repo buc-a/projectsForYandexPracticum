@@ -19,6 +19,7 @@
         min-height: calc(640px + (((100vw - 1024px) * (740 - 640)) / (1280 - 1024)));
     }
 }
+
 @media screen and (max-width: 1024px){
     .cover__link{
         min-height: calc(480px + (((100vw - 768px) * (640 - 480)) / (1024 - 768)));
