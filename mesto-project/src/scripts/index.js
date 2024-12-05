@@ -51,7 +51,6 @@ const checkInputValidity = (formElement, inputElement) => {
     if (!inputElement.validity.valid) {
         showError(formElement, inputElement, inputElement.validationMessage);
     } else {
-        console.log('правильная форма')
         hideError(formElement, inputElement);
     }
   };
@@ -75,7 +74,9 @@ const toggleButtonState = (inputList, buttonElement) => {
 
 const setEventListeners = (formElement) => {
     const buttonElement = formElement.querySelector('.popup__button');
-    
+    formElement.addEventListener('submit', function (evt) {
+        evt.preventDefault();
+    }); 
     const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
     inputList.forEach((inputElement) => {
         inputElement.addEventListener('input', function () {
@@ -83,12 +84,22 @@ const setEventListeners = (formElement) => {
             toggleButtonState(inputList, buttonElement);
         });
     });
-    
 };
 
 
-//настраиваем валидацию у формы изменения профиля
-setEventListeners(profileFormElement);
+
+const enableValidation = () => {
+    const formList = Array.from(document.querySelectorAll('.popup__form'));
+    formList.forEach((formElement) => {
+      setEventListeners(formElement);
+    });
+
+  };
+
+enableValidation();
+
+
+
 
 function createCard(name, link){
 
@@ -134,13 +145,45 @@ initialCards.forEach(function(item){
 
 function openModal(popup) {      
     popup.classList.add('popup_is-opened');
-    popup.querySelector('.popup__close').addEventListener('click', function(){
+    const buttonClose = popup.querySelector('.popup__close');
+
+    buttonClose.addEventListener('click', function(){
         closeModal(popup);
+    });
+
+    // при нажатии на Esc
+    document.addEventListener('keydown', closeByEsc);
+
+    //при нажатии за пределами элемента
+    popup.addEventListener('mouseup', function(e) {
+        const contentElement = popup.querySelector('.popup__content');
+        if (!contentElement.contains(e.target)) {
+            closeModal(popup);
+        }
     });
 }
 
+
 function closeModal(popup) {      
     popup.classList.remove('popup_is-opened');
+    document.removeEventListener('keydown', closeByEsc);
+}
+
+// при нажатии на Esc
+function closeByEsc(evt) {     
+    if (evt.key === 'Escape') {       
+        const openedPopup = document.querySelector('.popup_is-opened');       
+        closeModal(openedPopup);      
+    } 
+};
+
+const resetForm = (formElement) => {
+    const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
+    inputList.forEach((inputElement) => {
+        hideError(formElement, inputElement);
+    });
+    const btn = formElement.querySelector('.popup__button');
+    toggleButtonState(inputList, btn);
 }
 
 
@@ -149,6 +192,8 @@ buttonEdit.addEventListener('click', function(){
     nameInput.value = profileName.textContent;
     jobInput.value = profileDescription.textContent;
     openModal(profilePopup);
+    const formElement = profilePopup.querySelector('.popup__form');
+    resetForm(formElement);
 });
 
 function handleProfileFormSubmit(evt) {
@@ -161,11 +206,13 @@ function handleProfileFormSubmit(evt) {
 profileFormElement.addEventListener('submit', handleProfileFormSubmit);
 
 
-
 buttonCard.addEventListener('click', function(){
     placeNameInput.value = '';
     linkInput.value = '';
+
     openModal(cardPopup);
+    const formElement = cardPopup.querySelector('.popup__form');
+    resetForm(formElement);
 });
 
 function handleCardFormSubmit(evt) {
