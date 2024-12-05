@@ -119,6 +119,7 @@ function handleCardFormSubmit(evt) {
 
     closeModal(cardPopup);
 }
+console.log(typeof(NaN));
 
 cardFromElement.addEventListener('submit', handleCardFormSubmit);
 
