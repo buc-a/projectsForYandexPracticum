@@ -83,10 +83,11 @@ const setEventListeners = (formElement) => {
             toggleButtonState(inputList, buttonElement);
         });
     });
-
     
 };
 
+
+//настраиваем валидацию у формы изменения профиля
 setEventListeners(profileFormElement);
 
 function createCard(name, link){
