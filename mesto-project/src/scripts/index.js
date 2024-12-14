@@ -1,9 +1,14 @@
-import {initialCards} from './cards.js'
 import {closeModal, openModal} from './modal.js'
 import  {resetForm, enableValidation} from './validate.js'
 import {createCard} from './card.js'
+import {getInfoUser, getCards} from './api.js'
 import '../pages/index.css';
 
+
+//поля профиля
+const profileName = document.querySelector(".profile__title");
+const profileDescription = document.querySelector(".profile__description");
+const profileAvatar = document.querySelector('.profile__image');
 
 // @todo: DOM узлыs
 const palces = document.querySelector(".places__list");
@@ -22,9 +27,6 @@ const profileFormElement = profilePopup.querySelector(".popup__form");
 const nameInput = profileFormElement.querySelector(".popup__input_type_name");
 const jobInput = profileFormElement.querySelector(".popup__input_type_description");
 
-//поля профиля
-const profileName = document.querySelector(".profile__title");
-const profileDescription = document.querySelector(".profile__description");
 
 //форма добавления карточки 
 const cardFromElement = cardPopup.querySelector(".popup__form");
@@ -38,11 +40,32 @@ imagePopup.classList.add("popup_is-animated");
 enableValidation();
 
 
-// @todo: Вывести карточки на страницу
-initialCards.forEach(function(item){
-    const new_card = createCard(item.name, item.link);
-    palces.append(new_card);
-});
+//Вывести карточки на страницу
+getCards()
+    .then((data) => {
+        data.forEach(el => {
+            const new_card = createCard(el.name, el.link);
+            palces.append(new_card);           
+        });
+    })
+    .catch((err) => {
+        console.log("Error: " + err );
+    })
+    
+
+//вывести информацию о пользователю 
+getInfoUser()
+    .then((data) => {
+        profileName.textContent = data.name;
+        profileDescription.textContent = data.about;
+        profileAvatar.style.backgroundImage = `url(${data.avatar})`;
+    })
+    .catch((err) => {
+        console.log("Error: " + err );
+    })
+
+    
+
 
 buttonEdit.addEventListener('click', function(){
     nameInput.value = profileName.textContent;
