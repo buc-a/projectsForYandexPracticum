@@ -1,7 +1,7 @@
 import {closeModal, openModal} from './modal.js'
 import  {resetForm, enableValidation} from './validate.js'
 import {createCard} from './card.js'
-import {getInfoUser, getCards, setInfoUser} from './api.js'
+import {getInfoUser, getCards, setInfoUser, setCard} from './api.js'
 import '../pages/index.css';
 
 
@@ -44,7 +44,13 @@ enableValidation();
 getCards()
     .then((data) => {
         data.forEach(el => {
-            const new_card = createCard(el.name, el.link);
+
+            let likes_count = 0;
+            el.likes.forEach(() => {
+                likes_count += 1;
+            })
+            
+            const new_card = createCard(el.name, el.link, likes_count);
             palces.append(new_card);           
         });
     })
@@ -82,7 +88,7 @@ function handleProfileFormSubmit(evt) {
 
     setInfoUser(nameInput.value, jobInput.value)
         .catch((err) => {
-            console.log("Error: "+ err)
+            console.log("Error in set user info : "+ err)
         })
     closeModal(profilePopup);
 }
@@ -104,10 +110,20 @@ function handleCardFormSubmit(evt) {
     const cardPlaceName = placeNameInput.value;
     const cardLink = linkInput.value;
     const new_card = createCard(cardPlaceName, cardLink);
+    setCard(cardPlaceName, cardLink)
+        .then((data) => {
+            if ( data.name !== cardPlaceName && data.link !== cardLink){
+                console.log("Adding card is bad");
+            }
+        })
+        .catch((err) => {
+            console.log("Error in added card: " + err);
+        })
     palces.prepend(new_card);
 
     closeModal(cardPopup);
 }
+
 
 cardFromElement.addEventListener('submit', handleCardFormSubmit);
 

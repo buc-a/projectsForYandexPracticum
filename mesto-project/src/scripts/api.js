@@ -33,9 +33,23 @@ function setInfoUser (newName, newAbout){
     })
     })
     .then((res) => {
-      console.log(res)
       res.json()
 }) 
 }
 
-export {getInfoUser, getCards, setInfoUser}
+function setCard (newName, newLink){
+  return fetch(baseUrl + '/cards', {
+    method: 'POST',
+    headers: {
+      authorization: token,
+      'Content-Type': 'application/json'
+    }, 
+    body: JSON.stringify({
+      name: newName,
+      link: newLink
+    })
+    })
+    .then(res => res.json()) 
+}
+
+export {getInfoUser, getCards, setInfoUser, setCard}

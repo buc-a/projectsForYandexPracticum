@@ -2,19 +2,23 @@ import {openModal} from './modal.js';
 const template = document.querySelector("#card-template");
 const imagePopup = document.querySelector(".popup_type_image");
 
-function createCard(name, link){
+function createCard(name, link, likes){
 
     const item = template.content.cloneNode(true);
 
     const image = item.querySelector(".card__image");
     const title = item.querySelector(".card__title");
     const likeButton = item.querySelector(".card__like-button");
+    const likeNumber = item.querySelector(".card__like-number");
     const deleteButton = item.querySelector(".card__delete-button");
 
     image.src = link;
     image.alt = name;
 
     title.textContent = name;
+    likeNumber.textContent = likes;
+    //todo: добавить отображения кол-ва лайков 
+
 
     likeButton.addEventListener('click', function() {
         likeButton.classList.toggle("card__like-button_is-active");
