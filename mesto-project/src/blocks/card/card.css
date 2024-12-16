@@ -5,6 +5,7 @@
 @import url('./__like-area/card__like-area.css');
 @import url('./__like-number/card__like-number.css');
 @import url('./__delete-button/card__delete-button.css');
+@import url('./__delete-button/_invisible/card__delete-button_invisible.css');
 @import url('./__title/card__title.css');
 
 .card {

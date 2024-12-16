@@ -1,7 +1,7 @@
 import {closeModal, openModal} from './modal.js'
 import  {resetForm, enableValidation} from './validate.js'
 import {createCard} from './card.js'
-import {getInfoUser, getCards, setInfoUser, setCard} from './api.js'
+import {getInfoUser, getCards, setInfoUser, setCard, deleteCard} from './api.js'
 import '../pages/index.css';
 
 
@@ -39,9 +39,25 @@ imagePopup.classList.add("popup_is-animated");
 
 enableValidation();
 
+let currentID;
+//вывести информацию о пользователе
+getInfoUser()
+    .then((data) => {
+        currentID = data._id;
+        console.log("MyID: "+ currentID)
+        profileName.textContent = data.name;
+        profileDescription.textContent = data.about;
+        profileAvatar.style.backgroundImage = `url(${data.avatar})`;
+        displayCards();
+
+    })
+    .catch((err) => {
+        console.log("Error: " + err );
+    })
 
 //Вывести карточки на страницу
-getCards()
+function displayCards() {
+    getCards()
     .then((data) => {
         data.forEach(el => {
 
@@ -49,26 +65,19 @@ getCards()
             el.likes.forEach(() => {
                 likes_count += 1;
             })
-            
-            const new_card = createCard(el.name, el.link, likes_count);
+
+            const new_card = createCard(el.name, el.link, likes_count, el.owner._id == currentID, el._id);
             palces.append(new_card);           
         });
     })
     .catch((err) => {
         console.log("Error: " + err );
     })
+}
+
     
 
-//вывести информацию о пользователю 
-getInfoUser()
-    .then((data) => {
-        profileName.textContent = data.name;
-        profileDescription.textContent = data.about;
-        profileAvatar.style.backgroundImage = `url(${data.avatar})`;
-    })
-    .catch((err) => {
-        console.log("Error: " + err );
-    })
+
 
 
 
@@ -112,7 +121,7 @@ function handleCardFormSubmit(evt) {
     const new_card = createCard(cardPlaceName, cardLink);
     setCard(cardPlaceName, cardLink)
         .then((data) => {
-            if ( data.name !== cardPlaceName && data.link !== cardLink){
+            if ( data.name !== cardPlaceName || data.link !== cardLink){
                 console.log("Adding card is bad");
             }
         })
@@ -126,6 +135,7 @@ function handleCardFormSubmit(evt) {
 
 
 cardFromElement.addEventListener('submit', handleCardFormSubmit);
+
 
 
 

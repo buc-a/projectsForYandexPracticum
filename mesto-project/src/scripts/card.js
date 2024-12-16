@@ -1,8 +1,9 @@
 import {openModal} from './modal.js';
+import {deleteCard} from './api.js'
 const template = document.querySelector("#card-template");
 const imagePopup = document.querySelector(".popup_type_image");
 
-function createCard(name, link, likes){
+function createCard(name, link, likes, isDelete, cardId){
 
     const item = template.content.cloneNode(true);
 
@@ -12,19 +13,25 @@ function createCard(name, link, likes){
     const likeNumber = item.querySelector(".card__like-number");
     const deleteButton = item.querySelector(".card__delete-button");
 
+    
+    if (!isDelete){
+        deleteButton.classList.add("card__delete-button_invisible");
+    }
     image.src = link;
     image.alt = name;
 
     title.textContent = name;
     likeNumber.textContent = likes;
-    //todo: добавить отображения кол-ва лайков 
-
-
+  
     likeButton.addEventListener('click', function() {
         likeButton.classList.toggle("card__like-button_is-active");
     });
 
     deleteButton.addEventListener('click', function(){
+        deleteCard(cardId)
+            .catch((err) => {
+                console.log("Delete card error: " + err);
+            })
         deleteButton.closest('.card').remove();
     })
 

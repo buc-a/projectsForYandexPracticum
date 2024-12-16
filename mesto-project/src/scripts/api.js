@@ -32,9 +32,7 @@ function setInfoUser (newName, newAbout){
       about: newAbout
     })
     })
-    .then((res) => {
-      res.json()
-}) 
+    .then((res) => {res.json()}) 
 }
 
 function setCard (newName, newLink){
@@ -52,4 +50,14 @@ function setCard (newName, newLink){
     .then(res => res.json()) 
 }
 
-export {getInfoUser, getCards, setInfoUser, setCard}
+function deleteCard(cardId){
+  return fetch(baseUrl + '/cards/' + cardId, {
+    method: 'DELETE',
+    headers: {
+      authorization: token,
+    }
+    })
+    .then(res => res.json()) 
+}
+
+export {getInfoUser, getCards, setInfoUser, setCard, deleteCard}
