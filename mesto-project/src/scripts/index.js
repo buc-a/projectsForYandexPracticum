@@ -1,7 +1,7 @@
 import {closeModal, openModal} from './modal.js'
 import  {resetForm, enableValidation} from './validate.js'
 import {createCard} from './card.js'
-import {getInfoUser, getCards, setInfoUser, setCard, deleteCard} from './api.js'
+import {getInfoUser, getCards, setInfoUser, setCard} from './api.js'
 import '../pages/index.css';
 
 
@@ -44,7 +44,6 @@ let currentID;
 getInfoUser()
     .then((data) => {
         currentID = data._id;
-        console.log("MyID: "+ currentID)
         profileName.textContent = data.name;
         profileDescription.textContent = data.about;
         profileAvatar.style.backgroundImage = `url(${data.avatar})`;
@@ -60,13 +59,13 @@ function displayCards() {
     getCards()
     .then((data) => {
         data.forEach(el => {
-
-            let likes_count = 0;
-            el.likes.forEach(() => {
-                likes_count += 1;
+            let isLiked = 0;
+            el.likes.forEach((user) => {
+                if ( user._id == currentID){
+                    isLiked = 1;
+                }
             })
-
-            const new_card = createCard(el.name, el.link, likes_count, el.owner._id == currentID, el._id);
+            const new_card = createCard(el.name, el.link, el.likes.length, el.owner._id == currentID, isLiked, el._id);
             palces.append(new_card);           
         });
     })

@@ -1,9 +1,9 @@
 import {openModal} from './modal.js';
-import {deleteCard} from './api.js'
+import {deleteCard, likeCard, unlikeCard} from './api.js'
 const template = document.querySelector("#card-template");
 const imagePopup = document.querySelector(".popup_type_image");
 
-function createCard(name, link, likes, isDelete, cardId){
+function createCard(name, link, likes, isDelete, isLiked, cardId){
 
     const item = template.content.cloneNode(true);
 
@@ -17,14 +17,32 @@ function createCard(name, link, likes, isDelete, cardId){
     if (!isDelete){
         deleteButton.classList.add("card__delete-button_invisible");
     }
+
+    if (isLiked){
+        likeButton.classList.add("card__like-button_is-active");
+    }
     image.src = link;
     image.alt = name;
 
     title.textContent = name;
     likeNumber.textContent = likes;
   
+
     likeButton.addEventListener('click', function() {
         likeButton.classList.toggle("card__like-button_is-active");
+
+        if (likeButton.classList.contains("card__like-button_is-active")){
+            likeCard(cardId)
+                .then((data) => likeNumber.textContent = data.likes.length)
+                .catch((err) => console.log("Error in button-like: " + err));
+        }
+        else {
+            unlikeCard(cardId)
+                .then((data) => likeNumber.textContent = data.likes.length)
+                .catch((err) => console.log("Error in button-like: " + err));
+        }
+
+        
     });
 
     deleteButton.addEventListener('click', function(){

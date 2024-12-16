@@ -60,4 +60,24 @@ function deleteCard(cardId){
     .then(res => res.json()) 
 }
 
-export {getInfoUser, getCards, setInfoUser, setCard, deleteCard}
+function likeCard(cardId){
+  return fetch(baseUrl + '/cards/likes/' + cardId, {
+    method: 'PUT',
+    headers: {
+      authorization: token,
+      'Content-Type': 'application/json'
+    }
+    }).then(res => res.json()) 
+}
+
+function unlikeCard(cardId){
+  return fetch(baseUrl + '/cards/likes/' + cardId, {
+    method: 'DELETE',
+    headers: {
+      authorization: token,
+      'Content-Type': 'application/json'
+    }
+    }).then(res => res.json()) 
+}
+
+export {getInfoUser, getCards, setInfoUser, setCard, deleteCard, likeCard, unlikeCard}
