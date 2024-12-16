@@ -20,4 +20,22 @@ function getCards (){
     .then(res => res.json()) 
 }
 
-export {getInfoUser, getCards}
+function setInfoUser (newName, newAbout){
+  return fetch(baseUrl + '/users/me', {
+    method: 'PATCH',
+    headers: {
+      authorization: token,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      name: newName,
+      about: newAbout
+    })
+    })
+    .then((res) => {
+      console.log(res)
+      res.json()
+}) 
+}
+
+export {getInfoUser, getCards, setInfoUser}

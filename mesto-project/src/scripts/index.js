@@ -1,7 +1,7 @@
 import {closeModal, openModal} from './modal.js'
 import  {resetForm, enableValidation} from './validate.js'
 import {createCard} from './card.js'
-import {getInfoUser, getCards} from './api.js'
+import {getInfoUser, getCards, setInfoUser} from './api.js'
 import '../pages/index.css';
 
 
@@ -64,7 +64,7 @@ getInfoUser()
         console.log("Error: " + err );
     })
 
-    
+
 
 
 buttonEdit.addEventListener('click', function(){
@@ -79,6 +79,11 @@ function handleProfileFormSubmit(evt) {
     evt.preventDefault();
     profileName.textContent = nameInput.value;
     profileDescription.textContent = jobInput.value;
+
+    setInfoUser(nameInput.value, jobInput.value)
+        .catch((err) => {
+            console.log("Error: "+ err)
+        })
     closeModal(profilePopup);
 }
 
