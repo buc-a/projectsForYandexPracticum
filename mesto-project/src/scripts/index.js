@@ -27,11 +27,13 @@ const buttonEditAvatar = document.querySelector(".profile__avatar-container");
 //форма изменения аватара 
 const avatarFormElement = avatarPopup.querySelector(".popup__form");
 const avatarLinkInput = avatarFormElement.querySelector(".popup__input_type_url");
+const buttonAvatarForm = avatarFormElement.querySelector(".popup__button");
 
 //форма изменения профиля
 const profileFormElement = profilePopup.querySelector(".popup__form");
 const nameInput = profileFormElement.querySelector(".popup__input_type_name");
 const jobInput = profileFormElement.querySelector(".popup__input_type_description");
+const buttonProfileForm = profileFormElement.querySelector(".popup__button");
 
 
 //форма добавления карточки 
@@ -49,7 +51,6 @@ enableValidation();
 let currentID;
 //вывести информацию о пользователе
 getInfoUser()
-    .then(res => res.json())
     .then((data) => {
         currentID = data._id;
         profileName.textContent = data.name;
@@ -65,11 +66,6 @@ getInfoUser()
 //Вывести карточки на страницу
 function displayCards() {
     getCards()
-    .then(res => {
-        if (res.ok) {
-            return res.json();
-        }
-    })
     .then((data) => {
         data.forEach(el => {
             let isLiked = 0;
@@ -101,20 +97,19 @@ buttonEditAvatar.addEventListener('click', () => {
 
 function handleAvatarForm(evt){
     evt.preventDefault();
+    buttonAvatarForm.textContent = "Сохранение...";
     const imageURL = avatarLinkInput.value;
     setAvatar(imageURL)
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-        })
         .then(() => {
             profileAvatar.src = imageURL;
         })
         .catch((err) => {
             console.log("Error in edit avatar: " + err );
         })
-        .finally(() => closeModal(avatarPopup));
+        .finally(() => {
+            buttonAvatarForm.textContent = "Сохранить";
+            closeModal(avatarPopup);
+        });
 
 }
 
@@ -131,12 +126,8 @@ buttonEdit.addEventListener('click', function(){
 function handleProfileFormSubmit(evt) {
     evt.preventDefault();
 
+    buttonProfileForm.textContent  = "Сохранение...";
     setInfoUser(nameInput.value, jobInput.value)
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-        })
         .then(() => {
             profileName.textContent = nameInput.value;
             profileDescription.textContent = jobInput.value;        
@@ -144,7 +135,11 @@ function handleProfileFormSubmit(evt) {
         .catch((err) => {
             console.log("Error in set user info : "+ err)
         })
-        .finally(() => closeModal(profilePopup));
+        .finally(() => {
+            buttonProfileForm.textContent  = "Сохранение...";
+            closeModal(profilePopup)
+        }
+    );
     
 }
 
@@ -166,13 +161,6 @@ function handleCardFormSubmit(evt) {
     const cardLink = linkInput.value;
     buttonCardForm.textContent = "Сохранение...";
     setCard(cardPlaceName, cardLink)
-        .then(res => {
-            
-            if (res.ok) {
-                
-                return res.json();
-            }
-        })
         .then((res) => {
             const new_card = createCard(cardPlaceName, cardLink);
             palces.prepend(new_card);

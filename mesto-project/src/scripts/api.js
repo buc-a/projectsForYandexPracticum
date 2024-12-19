@@ -7,7 +7,14 @@ function getInfoUser () {
   return fetch(baseUrl + '/users/me', {
     headers: {
       authorization: token,
-    }}) 
+    }})
+    .then(res => {
+      if (res.ok) {
+
+          return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+  }) 
 
 }
 
@@ -17,6 +24,13 @@ function getCards (){
       authorization: token,
     }
     })
+    .then(res => {
+      if (res.ok) {
+
+          return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+  })
 
 }
 
@@ -32,6 +46,13 @@ function setInfoUser (newName, newAbout){
       about: newAbout
     })
     })
+    .then(res => {
+      if (res.ok) {
+
+          return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+  })
 
 }
 
@@ -47,6 +68,13 @@ function setCard (newName, newLink){
       link: newLink
     })
     })
+    .then(res => {
+      if (res.ok) {
+
+          return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+  })
 
 }
 
@@ -57,6 +85,13 @@ function deleteCard(cardId){
       authorization: token,
     }
     })
+    .then(res => {
+      if (res.ok) {
+
+          return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+  })
    
 }
 
@@ -68,6 +103,13 @@ function likeCard(cardId){
       'Content-Type': 'application/json'
     }
     }) 
+    .then(res => {
+      if (res.ok) {
+
+          return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+  })
 }
 
 function unlikeCard(cardId){
@@ -78,6 +120,13 @@ function unlikeCard(cardId){
       'Content-Type': 'application/json'
     }
     })
+    .then(res => {
+      if (res.ok) {
+
+          return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+  })
 }
 
 function setAvatar(newLink){
@@ -91,6 +140,13 @@ function setAvatar(newLink){
       avatar: newLink
     })
   })
+  .then(res => {
+    if (res.ok) {
+
+        return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
+})
 }
 
 export {getInfoUser, getCards, setInfoUser, setCard, deleteCard, likeCard, unlikeCard, setAvatar}
