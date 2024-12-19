@@ -8,7 +8,7 @@ function getInfoUser () {
     headers: {
       authorization: token,
     }}) 
-    .then(res => res.json())
+
 }
 
 function getCards (){
@@ -17,7 +17,7 @@ function getCards (){
       authorization: token,
     }
     })
-    .then(res => res.json()) 
+
 }
 
 function setInfoUser (newName, newAbout){
@@ -32,7 +32,7 @@ function setInfoUser (newName, newAbout){
       about: newAbout
     })
     })
-    .then((res) => {res.json()}) 
+
 }
 
 function setCard (newName, newLink){
@@ -47,7 +47,7 @@ function setCard (newName, newLink){
       link: newLink
     })
     })
-    .then(res => res.json()) 
+
 }
 
 function deleteCard(cardId){
@@ -57,7 +57,7 @@ function deleteCard(cardId){
       authorization: token,
     }
     })
-    .then(res => res.json()) 
+   
 }
 
 function likeCard(cardId){
@@ -67,7 +67,7 @@ function likeCard(cardId){
       authorization: token,
       'Content-Type': 'application/json'
     }
-    }).then(res => res.json()) 
+    }) 
 }
 
 function unlikeCard(cardId){
@@ -77,7 +77,20 @@ function unlikeCard(cardId){
       authorization: token,
       'Content-Type': 'application/json'
     }
-    }).then(res => res.json()) 
+    })
 }
 
-export {getInfoUser, getCards, setInfoUser, setCard, deleteCard, likeCard, unlikeCard}
+function setAvatar(newLink){
+  return fetch(baseUrl + '/users/me/avatar', {
+    method: 'PATCH',
+    headers: {
+      authorization: token,
+      'Content-Type': 'application/json'
+    }, 
+    body: JSON.stringify({
+      avatar: newLink
+    })
+  })
+}
+
+export {getInfoUser, getCards, setInfoUser, setCard, deleteCard, likeCard, unlikeCard, setAvatar}
