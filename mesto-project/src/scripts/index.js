@@ -162,7 +162,8 @@ function handleCardFormSubmit(evt) {
     buttonCardForm.textContent = "Сохранение...";
     setCard(cardPlaceName, cardLink)
         .then((res) => {
-            const new_card = createCard(cardPlaceName, cardLink);
+            
+            const new_card = createCard(cardPlaceName, cardLink, 0, true, false, res._id);
             palces.prepend(new_card);
         })
         .catch((err) => {
