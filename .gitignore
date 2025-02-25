@@ -1,1 +1,7 @@
-*.env
+node_modules
+dist
+.env
+.yarn
+.idea
+.vscode
+*.log
