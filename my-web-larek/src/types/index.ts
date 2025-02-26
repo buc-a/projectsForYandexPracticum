@@ -7,6 +7,16 @@ export interface IProduct{
     price: number | null
 }
 
+export interface IOrder{
+    
+    payment: PaymentMethod,
+    email: string,
+    phone: string,
+    address: string,
+    total: 2200,
+    items: ProductList
+}
+
 //Model
 
 export interface ProductList{ 
