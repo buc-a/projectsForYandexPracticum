@@ -1,19 +1,20 @@
 import './scss/styles.scss';
 
-import {AuctionAPI} from "./components/AuctionAPI";
+import {AuctionAPI} from "./components/model/AuctionAPI";
 import {API_URL, CDN_URL} from "./utils/constants";
 import {EventEmitter} from "./components/base/events";
-import {AppState, CatalogChangeEvent, LotItem} from "./components/AppData";
-import {Page} from "./components/Page";
-import {Auction, AuctionItem, BidItem, CatalogItem} from "./components/Card";
+import {CatalogChangeEvent, LotItem} from "./components/model/LotItem";
+import {AppState} from "./components/model/AppState"
+import {Page} from "./components/view/Page";
+import {Auction, AuctionItem, BidItem, CatalogItem} from "./components/view/Card";
 import {cloneTemplate, createElement, ensureElement} from "./utils/utils";
-import {Modal} from "./components/common/Modal";
-import {Basket} from "./components/common/Basket";
-import {Tabs} from "./components/common/Tabs";
+import {Modal} from "./components/view/Modal";
+import {Basket} from "./components/view/Basket";
+import {Tabs} from "./components/view/Tabs";
 import {IOrderForm} from "./types";
-import {Order} from "./components/Order";
-import {Success} from "./components/common/Success";
-import Plug from './components/view/Plug';
+import {Order} from "./components/view/Order";
+import {Success} from "./components/view/Success";
+import Plug from './components/view/Blank';
 
 const events = new EventEmitter();
 const api = new AuctionAPI(CDN_URL, API_URL);
@@ -43,23 +44,24 @@ const appData = new AppState({}, events);
 const page = new Page(document.body, events);
 const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
 
-// Переиспользуемые части интерфейса
 
 //Активные лоты в корзине
 const bids = new Basket(cloneTemplate(bidsTemplate), events);
 
 //Закрытые лоты в корзине 
 const basket = new Basket(cloneTemplate(basketTemplate), events);
+
+//кнопки меню 
 const tabs = new Tabs(cloneTemplate(tabsTemplate), {
     onClick: (name) => {
         if (name === 'closed') events.emit('basket:open');
         else events.emit('bids:open');
     }
 });
+
+//заказ 
 const order = new Order(cloneTemplate(orderTemplate), events);
 
-// Дальше идет бизнес-логика
-// Поймали событие, сделали что нужно
 
 // Изменились элементы каталога
 events.on<CatalogChangeEvent>('items:changed', () => {
@@ -129,8 +131,7 @@ events.on('order:open', () => {
 
 // Открыть активные лоты
 events.on('bids:open', () => {
-
-    
+   
     modal.render({
         content: createElement<HTMLElement>('div', {}, [
             tabs.render({
@@ -143,9 +144,10 @@ events.on('bids:open', () => {
     
 });
 
-// Открыть закрытые лоты
+
 // Открыть закрытые лоты
 events.on('basket:open', () => {
+    
     if (appData.getClosedLots().length === 0) {
       const success = new Plug(cloneTemplate(emptyTemplate), {
         onClick: () => {
