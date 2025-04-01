@@ -80,7 +80,8 @@ events.onAll(({ eventName, data }) => {
  events.on("card:addToBasket", () => {
  	basketModel.addToBasket(productListModel.selectedCard);
  	basket.renderHeaderBasketCounter(basketModel.getAmount());
- 	modal.close();
+	events.emit("card:select", productListModel.selectedCard);
+
  });
  
  //открыта корзина
